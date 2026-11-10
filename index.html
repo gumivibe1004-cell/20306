@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선주고 2학년 3반 - 김보민 홈페이지 - IT & Software Department Exhibition Showcase</title>
+    
+    <!-- External Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Orbitron:wght@600;800;900&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (for base utilities) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-dark: #030712;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --border-color: rgba(0, 240, 255, 0.25);
+            --primary: #00f0ff;
+            --primary-glow: rgba(0, 240, 255, 0.4);
+            --secondary: #a855f7;
+            --accent-green: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Pretendard', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas Particle Background */
+        #tech-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Section Wrappers */
+        .section { padding: 90px 20px; }
+        .section-dark {
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Typography & Headings */
+        .gradient-text {
+            background: linear-gradient(135deg, #00f0ff 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .font-heading { font-family: var(--font-heading); }
+        .font-code { font-family: var(--font-code); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 26px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: var(--transition);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #0072ff 100%);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
+        }
+        .btn-outline {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #000;
+        }
+        .btn-sm { padding: 6px 14px; font-size: 0.85rem; }
+
+        /* Guide Banner Box (체험 설명 카드) */
+        .guide-box {
+            background: rgba(0, 240, 255, 0.04);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 22px 26px;
+            margin-bottom: 35px;
+            backdrop-filter: blur(10px);
+        }
+        .guide-badge {
+            font-family: var(--font-code);
+            font-size: 0.82rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .guide-box h3 {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .guide-box p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .guide-box p strong { color: var(--primary); }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 1000;
+            padding: 16px 0;
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: var(--font-heading);
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+        .logo-icon, .highlight { color: var(--primary); }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 140px 20px 60px;
+        }
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Terminal Component */
+        .terminal-wrapper { max-width: 850px; margin: 0 auto; }
+        .terminal-controls { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
+        .term-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .term-btn:hover, .term-btn.active {
+            background: var(--primary);
+            color: #000;
+            font-weight: 700;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        .terminal-window {
+            background: #090d16;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        .terminal-header {
+            background: #0f172a;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.red { background: #ef4444; } .dot.yellow { background: #f59e0b; } .dot.green { background: #10b981; }
+        .term-title { font-family: var(--font-code); font-size: 0.8rem; color: var(--text-muted); }
+        .terminal-body {
+            padding: 22px;
+            font-family: var(--font-code);
+            font-size: 0.92rem;
+            min-height: 220px;
+            max-height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .term-line { color: #a7f3d0; }
+        .term-line.prompt { color: var(--primary); }
+        .term-line.highlight { color: #f472b6; font-weight: 600; }
+
+        /* Curriculum Component */
+        .curriculum-builder { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .subjects-pool, .my-curriculum-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+        }
+        .subjects-pool h3 { font-size: 1.1rem; margin-bottom: 20px; }
+        .subject-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .sub-chip {
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--primary);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.88rem;
+        }
+        .sub-chip:hover { background: var(--primary); color: #000; font-weight: 600; }
+
+        .my-curriculum-card { display: flex; flex-direction: column; justify-content: space-between; }
+        .card-header-tech {
+            font-family: var(--font-heading);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+        .card-selected-list { min-height: 120px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
+        .empty-msg { color: var(--text-muted); font-size: 0.9rem; margin: auto; }
+        .selected-chip {
+            background: var(--secondary);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .selected-chip i { cursor: pointer; }
+        .card-footer-tech {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        /* Quiz Component */
+        .quiz-wrapper { max-width: 650px; margin: 0 auto; }
+        .quiz-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .quiz-progress { height: 100%; width: 33.33%; background: var(--primary); transition: width 0.3s; }
+        .quiz-card, .quiz-result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+        }
+        .quiz-header-badge { font-family: var(--font-code); color: var(--primary); font-size: 0.8rem; margin-bottom: 15px; }
+        #quiz-question { font-size: 1.25rem; margin-bottom: 25px; line-height: 1.4; }
+        .quiz-options { display: flex; flex-direction: column; gap: 12px; }
+        .quiz-opt-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: var(--transition);
+        }
+        .quiz-opt-btn:hover { background: rgba(0, 240, 255, 0.15); border-color: var(--primary); }
+        .result-badge { color: var(--accent-green); font-family: var(--font-code); font-size: 0.85rem; margin-bottom: 10px; }
+        .result-desc { color: var(--text-muted); margin: 15px 0 25px; line-height: 1.6; }
+
+        /* Guestbook Form */
+        .inquiry-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .guestbook-wall { display: flex; flex-direction: column; gap: 10px; max-height: 240px; overflow-y: auto; margin-top: 15px; }
+        .gb-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 0.88rem;
+        }
+        .gb-author { color: var(--primary); font-weight: 600; font-size: 0.82rem; display: block; margin-bottom: 3px; }
+
+        .inquiry-form-container { background: var(--bg-card); border: 1px solid var(--border-color); padding: 30px; border-radius: 16px; }
+        .tech-form { display: flex; flex-direction: column; gap: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 0.85rem; color: var(--text-muted); }
+        .form-group input, .form-group textarea {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 6px;
+            outline: none;
+            transition: var(--transition);
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+
+        /* Career & Prep Grid */
+        .career-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 25px;
+            transition: var(--transition);
+        }
+        .career-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+
+        .prep-step {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 25px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 850px) {
+            .curriculum-builder, .inquiry-wrapper { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.2rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Tech Canvas Background -->
+    <canvas id="tech-canvas"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="logo">
+                <i class="fa-solid fa-terminal logo-icon"></i>
+                <span class="logo-text">DEPT. OF <span class="highlight">IT & SW</span></span>
+            </a>
+            <nav class="nav-links">
+                <a href="#hero">부스 소개</a>
+                <a href="#exp-terminal">1. 라이브 코딩</a>
+                <a href="#exp-curriculum">2. 커리큘럼 조합</a>
+                <a href="#exp-quiz">3. 진로 적성 퀴즈</a>
+                <a href="#exp-careers">4. 진로 & 준비</a>
+                <a href="#exp-guestbook" class="btn-nav">방명록 & 문의</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="container">
+            <div class="badge-pill">
+                <span class="pulse-dot"></span> 2026 IT학과 전시회 공식 체험 웹사이트
+            </div>
+            <h1 class="hero-title font-heading font-extrabold text-4xl sm:text-5xl mb-4">
+                손끝으로 경험하는<br><span class="gradient-text">IT & 소프트웨어 세상</span>
+            </h1>
+            <p class="hero-desc">
+                어서 오세요! 본 전시 부스는 IT학과에서 배우는 핵심 프로그래밍, 전공 커리큘럼, 진로 탐색을 관람객이 직접 체험할 수 있도록 제작되었습니다. 아래 체험 모듈을 터치해 보세요!
+            </p>
+            <div class="hero-cta mb-12">
+                <a href="#exp-terminal" class="btn btn-primary"><i class="fa-solid fa-play"></i> 코딩 체험 시작하기</a>
+                <a href="#exp-quiz" class="btn btn-outline"><i class="fa-solid fa-vial"></i> 진로 적성 퀴즈</a>
+            </div>
+
+            <!-- Live Metrics Counter -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="metric-card">
+                    <div class="text-3xl font-extrabold text-cyan-400 font-heading" id="metric-employment">0%</div>
+                    <div class="text-xs text-slate-400 mt-1">취업률/진학률</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-3xl font-extrabold text-purple-400 font-heading" id="metric-projects">0+</div>
+                    <div class="text-xs text-slate-400 mt-1">산학협력 프로젝트</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-3xl font-extrabold text-emerald-400 font-heading" id="metric-labs">0개</div>
+                    <div class="text-xs text-slate-400 mt-1">첨단 실습 연구실</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-3xl font-extrabold text-pink-400 font-heading" id="metric-awards">0건</div>
+                    <div class="text-xs text-slate-400 mt-1">경진대회 수상실적</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [체험 01] 라이브 코딩 터미널 시뮬레이터 -->
+    <section id="exp-terminal" class="section section-dark">
+        <div class="container">
+            <!-- 체험 안내 설명 카드 -->
+            <div class="guide-box">
+                <div class="guide-badge"><i class="fa-solid fa-circle-info"></i> 체험 01 안내 가이드</div>
+                <h3>라이브 코딩 터미널 시뮬레이션</h3>
+                <p>
+                    <strong>어떤 체험인가요?</strong> 실제 전공 수업과 산업 현장에서 사용하는 개발 명령어 콘솔(Terminal)을 직관적으로 시뮬레이션한 모듈입니다.<br>
+                    <strong>무엇을 배울 수 있나요?</strong> 인공지능 모델 학습, 웹 서비스 빌드, 사이버 보안 스캔 버튼을 누르면 실시간 코드 실행 과정과 결과를 눈으로 확인할 수 있습니다.
+                </p>
+            </div>
+
+            <div class="terminal-wrapper">
+                <div class="terminal-controls">
+                    <button class="term-btn active" onclick="runCommand('ai')"><i class="fa-solid fa-brain"></i> [AI] 딥러닝 모델 학습</button>
+                    <button class="term-btn" onclick="runCommand('web')"><i class="fa-solid fa-server"></i> [Dev] 풀스택 웹서버 빌드</button>
+                    <button class="term-btn" onclick="runCommand('security')"><i class="fa-solid fa-shield-halved"></i> [Security] 보안 시스템 스캔</button>
+                </div>
+
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="term-title">bash -- live_demo_console.sh</span>
+                    </div>
